@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="LOG__HOME" value="C://logs//each-thread"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator class="glim.antony.ThreadNameBasedDiscriminator"/>
+        <sift>
+            <appender name="FILE-${threadName}" class="ch.qos.logback.core.FileAppender">
+                <file>${LOG__HOME}//user-${threadName}.log</file>
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <pattern>%d{HH:mm:ss:SSS} | %-5level | %thread | %logger{20} | %msg%n%rEx</pattern>
+                </layout>
+            </appender>
+        </sift>
+    </appender>
+
+    <root level="ALL">
+        <appender-ref ref="SIFT" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>

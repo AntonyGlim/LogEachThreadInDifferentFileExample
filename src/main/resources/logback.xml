@@ -2,21 +2,34 @@
 <configuration>
 
     <property name="LOG__HOME" value="C://logs//each-thread"/>
+    <property name="MY__PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} | %-5level | %-16thread | %-16class | %-16method | %-3line | %message%n%rEx"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>${MY__PATTERN}</pattern>
         </encoder>
     </appender>
 
     <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
         <discriminator class="glim.antony.ThreadNameBasedDiscriminator"/>
         <sift>
-            <appender name="FILE-${threadName}" class="ch.qos.logback.core.FileAppender">
+            <appender name="FILE-${threadName}" class="ch.qos.logback.core.rolling.RollingFileAppender">
                 <file>${LOG__HOME}//user-${threadName}.log</file>
                 <layout class="ch.qos.logback.classic.PatternLayout">
-                    <pattern>%d{HH:mm:ss:SSS} | %-5level | %thread | %logger{20} | %msg%n%rEx</pattern>
+                    <pattern>${MY__PATTERN}</pattern>
                 </layout>
+
+                <rollingPolicy
+                        class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+                    <FileNamePattern>${LOG__HOME}/${threadName}.%i.log.zip</FileNamePattern>
+                    <MinIndex>1</MinIndex>
+                    <MaxIndex>10</MaxIndex>
+                </rollingPolicy>
+
+                <triggeringPolicy
+                        class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+                    <MaxFileSize>10MB</MaxFileSize>
+                </triggeringPolicy>
             </appender>
         </sift>
     </appender>

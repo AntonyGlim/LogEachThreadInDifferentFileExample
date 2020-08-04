@@ -14,6 +14,9 @@ import java.util.concurrent.Executors;
 @Slf4j
 public class Main {
 
+    private static int count = 10_000;
+    private static long sleepTime = 1000;
+
     public static void main(String[] args) {
         ExecutorService executor1 = Executors.newSingleThreadExecutor(new ThreadNameFactory("th1"));
         ExecutorService executor2 = Executors.newSingleThreadExecutor(new ThreadNameFactory("th2"));
@@ -28,15 +31,15 @@ public class Main {
     static class Printer1 implements Runnable {
         @Override
         public void run() {
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < count; i++) {
 //                MDC.put("userid", "Thread1");
 //                MDC.put("first", "Dorothy111");
 //                MDC.put("last", "Parker111");
-                log.info("info");
+                log.info("info1");
                 System.out.println("info1");
 //                MDC.remove("userid");
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -47,11 +50,11 @@ public class Main {
     static class Printer2 implements Runnable {
         @Override
         public void run() {
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < count; i++) {
                 log.info("info2");
                 System.out.println("info2");
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -63,7 +66,7 @@ public class Main {
         @Override
         public void run() {
 
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < count; i++) {
                 log.trace("info3");
                 log.debug("info3");
                 log.info("info3");
@@ -71,7 +74,7 @@ public class Main {
                 log.error("info3");
                 System.out.println("info3");
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

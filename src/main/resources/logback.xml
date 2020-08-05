@@ -36,6 +36,9 @@
 
     <root level="ALL">
         <appender-ref ref="SIFT" />
-        <appender-ref ref="CONSOLE" />
     </root>
+
+    <logger name="glim.antony" level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </logger>
 </configuration>
